@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Spendly — Track Every Rupee{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge"><span class="hero-badge-dot"></span>Free to use · No credit card needed</div>
+        <h1 class="hero-title">
+            Track every rupee.<br>
+            <span class="hero-title-accent">Know where it goes.</span>
+        </h1>
+        <p class="hero-subtitle">
+            Spendly helps you log expenses, spot patterns, and stay
+            on budget — without the spreadsheet headache.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
+            <button id="open-video-modal" class="btn-primary">See how it works</button>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="mock-dashboard">
+            <div class="mock-tl">
+                <span class="mock-tl-dot" style="background:#ff5f57;"></span>
+                <span class="mock-tl-dot" style="background:#ffbd2e;"></span>
+                <span class="mock-tl-dot" style="background:#28c840;"></span>
+            </div>
+            <div class="mock-stats-row">
+                <div class="mock-stat">
+                    <span class="mock-stat-label">This month</span>
+                    <span class="mock-stat-value">₹18,240</span>
+                    <span class="mock-stat-tag mock-stat-negative">+12% vs last</span>
+                </div>
+                <div class="mock-stat">
+                    <span class="mock-stat-label">Budget left</span>
+                    <span class="mock-stat-value">₹6,760</span>
+                    <span class="mock-stat-tag mock-stat-positive">43% remaining</span>
+                </div>
+                <div class="mock-stat">
+                    <span class="mock-stat-label">Transactions</span>
+                    <span class="mock-stat-value">34</span>
+                    <span class="mock-stat-tag mock-stat-neutral">this month</span>
+                </div>
+            </div>
+            <div class="mock-progress-rows">
+                <div class="mock-progress-row">
+                    <span class="mock-progress-label">Food</span>
+                    <div class="mock-progress-track">
+                        <div class="mock-progress-fill" style="width:75%; background:#f59e0b;"></div>
+                    </div>
+                </div>
+                <div class="mock-progress-row">
+                    <span class="mock-progress-label">Travel</span>
+                    <div class="mock-progress-track">
+                        <div class="mock-progress-fill" style="width:55%; background:#3b82f6;"></div>
+                    </div>
+                </div>
+                <div class="mock-progress-row">
+                    <span class="mock-progress-label">Bills</span>
+                    <div class="mock-progress-track">
+                        <div class="mock-progress-fill" style="width:38%; background:#6366f1;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="features-inner">
+        <div class="feature-card">
+            <div class="feature-icon">₹</div>
+            <h3 class="feature-title">Log expenses instantly</h3>
+            <p class="feature-body">Add any expense in seconds. Category, amount, date, description — all in one simple form.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">◎</div>
+            <h3 class="feature-title">Understand your patterns</h3>
+            <p class="feature-body">See exactly where your money goes with category breakdowns and monthly summaries.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">◷</div>
+            <h3 class="feature-title">Filter by time period</h3>
+            <p class="feature-body">View your spending for any date range — last week, last month, or a custom period.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner">
+        <h2 class="cta-title">Ready to take control?</h2>
+        <p class="cta-body">Join thousands of people who track their expenses with Spendly.</p>
+        <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
+    </div>
+</section>
+
+<!-- Video modal -->
+<div id="video-modal" class="vmodal-overlay" aria-hidden="true">
+    <div class="vmodal-box" role="dialog" aria-modal="true" aria-label="How it works video">
+        <button id="close-video-modal" class="vmodal-close" aria-label="Close">&times;</button>
+        <div class="vmodal-video">
+            <iframe id="video-iframe"
+                    src=""
+                    data-src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="How Spendly works"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block head %}
+<style>
+.vmodal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.vmodal-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.vmodal-box {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    width: min(860px, 92vw);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+}
+
+.vmodal-overlay.is-open .vmodal-box {
+    transform: scale(1);
+}
+
+.vmodal-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.vmodal-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.vmodal-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.vmodal-close:hover { background: rgba(0, 0, 0, 0.9); }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const overlay = document.getElementById('video-modal');
+    const iframe  = document.getElementById('video-iframe');
+    const openBtn = document.getElementById('open-video-modal');
+    const closeBtn = document.getElementById('close-video-modal');
+    const videoSrc = iframe.dataset.src;
+
+    function openModal() {
+        iframe.src = videoSrc;
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        iframe.src = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+    });
+})();
+</script>
+{% endblock %}
